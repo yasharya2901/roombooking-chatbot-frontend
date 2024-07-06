@@ -1,0 +1,21 @@
+.chat-message {
+    margin-bottom: 10px;
+}
+
+.chat-message.user {
+    text-align: right;
+}
+
+.chat-message.user p {
+    display: inline-block;
+    background-color: #e1ffc7;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.chat-message.bot p {
+    display: inline-block;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 8px;
+}
