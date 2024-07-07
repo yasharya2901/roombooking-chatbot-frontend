@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import ChatMessage from './ChatMessage';
 import './ChatWindow.css';
+import useSession from '../hooks/useSession';
 
 function ChatWindow() {
+  const sessionId = useSession();
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
@@ -16,7 +18,7 @@ function ChatWindow() {
       const response = await fetch('http://localhost:7865/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 'user46', message: inputValue }),
+        body: JSON.stringify({ sessionId: sessionId, userId: 'user46', message: inputValue }),
       });
 
       if (!response.ok) {
