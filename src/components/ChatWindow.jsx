@@ -30,11 +30,11 @@ function ChatWindow() {
 
       const data = await response.json();
       const botMessage = { role: 'bot', content: data.response };
-      setMessages(prevMessages => [...prevMessages, userMessage, botMessage]);
+      setMessages(prevMessages => [...prevMessages, botMessage]);
     } catch (error) {
       console.error('Error:', error);
       const errorMessage = { role: 'bot', content: 'Error: Unable to get a response from the bot.' };
-      setMessages(prevMessages => [...prevMessages, userMessage, errorMessage]);
+      setMessages(prevMessages => [...prevMessages, errorMessage]);
     }
   };
 
