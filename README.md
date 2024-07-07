@@ -1,6 +1,5 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Important
+Please update the API endpoint in the `src/components/ChatWindow.jsx` file to the correct one in the `handleSendMessage` function.
 
 ## Available Scripts
 
