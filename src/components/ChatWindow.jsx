@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ChatMessage from './ChatMessage';
 import './ChatWindow.css';
 import useSession from '../hooks/useSession';
@@ -7,12 +7,15 @@ function ChatWindow() {
   const sessionId = useSession();
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const chatWindowBodyRef = useRef(null);
+  const bottomRef = useRef(null);
 
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
     const userMessage = { role: 'user', content: inputValue };
-    setMessages([...messages, userMessage]);
+    setMessages(prevMessages => [...prevMessages, userMessage]);
+    setInputValue('');  // Clear the input field
 
     try {
       const response = await fetch('http://localhost:7865/chat', {
@@ -27,29 +30,35 @@ function ChatWindow() {
 
       const data = await response.json();
       const botMessage = { role: 'bot', content: data.response };
-      setMessages([...messages, userMessage, botMessage]);
+      setMessages(prevMessages => [...prevMessages, userMessage, botMessage]);
     } catch (error) {
       console.error('Error:', error);
       const errorMessage = { role: 'bot', content: 'Error: Unable to get a response from the bot.' };
-      setMessages([...messages, userMessage, errorMessage]);
+      setMessages(prevMessages => [...prevMessages, userMessage, errorMessage]);
     }
-
-    setInputValue('');
   };
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
+  // Scroll to the bottom of the chat window when messages change
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   return (
     <div className='chat-window'>
       <div className='chat-window-header'>
-        <h2>Chat</h2>
+        <h2>Hotel Booking Assistant</h2>
       </div>
-      <div className='chat-window-body'>
+      <div className='chat-window-body' ref={chatWindowBodyRef}>
         {messages.map((msg, index) => (
           <ChatMessage key={index} message={msg} />
         ))}
+        <div ref={bottomRef} />  {/* Dummy element to scroll to */}
       </div>
       <div className='chat-window-footer'>
         <input
